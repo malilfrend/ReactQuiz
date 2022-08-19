@@ -23,14 +23,12 @@ const questions = [
   },
 ];
 
-function Result({correct, max}) {
+function Result({correct, max, startAgain}) {
   return (
     <div className="result">
       <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" />
       <h2>Вы отгадали {correct} из {max} ответов</h2>
-      <a href='/'>
-        <button>Попробовать снова</button>
-      </a>
+        <button onClick={startAgain}>Попробовать снова</button>
     </div>
   );
 }
@@ -61,21 +59,24 @@ function Game({step, question, onClickVariant}) {
 function App() {
 
   const [step, setStep] = React.useState(0)
-  const question = questions[step]
   const [correct, setCorrect] = React.useState(0)
-
+  const question = questions[step]
+  
   const onClickVariant = (index, correctAnswer) => {
     if (index === correctAnswer) {
       setCorrect(correct + 1)
     }
     setStep(step + 1)
   }
- 
+  const startAgain = () => {
+    setStep(0)
+    setCorrect(0)
+  }
   return (
     <div className="App">
       { step !== questions.length 
         ? <Game question={question} onClickVariant={onClickVariant} step={step}/>
-        : <Result correct={correct} max={questions.length}/>
+        : <Result correct={correct} max={questions.length} startAgain={startAgain}/>
       }
     </div>
   );
